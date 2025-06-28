@@ -8,6 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from fpdf import FPDF
 import requests
 import os
+import datetime
 
 def abrir_frontend(driver, results):
     # Opens the frontend application in the browser
@@ -75,6 +76,7 @@ def create_pdf(results):
     pdf.set_font("Arial", size=12)
     pdf.cell(200, 10, "Resultados de Pruebas FrontEnd", ln=True, align="C")
     pdf.ln(10)
+    pdf.multi_cell(100, 10,"Test performed: " + str(datetime.datetime.now().date()))
 
     for line in results:
         pdf.multi_cell(0, 10, line.encode('ascii', 'ignore').decode())
@@ -98,8 +100,6 @@ def create_pdf(results):
 
     pdf_filename = os.path.join(new_path, f"Report_{num}.pdf")
     pdf.output(pdf_filename)
-
-    pdf.output("resultados_FrontEnd_Test.pdf")
     print("PDF generado como 'resultados_FrontEnd_Test.pdf'")
 
 def main():
@@ -116,9 +116,15 @@ def main():
         task_id = crear_tarea(driver, wait, user_id, results)
         ver_tareas(driver, results)
         time.sleep(3)  # Final delay to observe results if not running headless
-        create_pdf(results)
+        
         requests.get(f'http://127.0.0.1:5001/users/delete/{user_id}')
+        if requests.get(f'http://127.0.0.1:5001/users/delete/{user_id}').status_code == 404:
+            results.append(f"Eliminated User: {user_id}")
+
         requests.get(f'http://127.0.0.1:5002/tasks/delete/{task_id}')
+        if requests.get(f'http://127.0.0.1:5002/tasks/delete/{task_id}').status_code == 404:
+            results.append(f"Eliminated Task: {user_id}")
+        create_pdf(results)
         time.sleep(3)
 
     finally:

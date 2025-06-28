@@ -1,6 +1,7 @@
 import requests
 from fpdf import FPDF
 import os
+import datetime
 
 # Endpoints
 USERS_URL = "http://localhost:5001/users"
@@ -37,6 +38,7 @@ def create_pdf(results):
     pdf.set_font("Arial", size=12)
     pdf.cell(200, 10, "Resultados de Pruebas BackEnd", ln=True, align="C")
     pdf.ln(10)
+    pdf.multi_cell(100, 10,"Test performed: " + str(datetime.datetime.now().date()))
 
     for line in results:
         pdf.multi_cell(0, 10, line.encode('ascii', 'ignore').decode())
@@ -78,13 +80,18 @@ def integration_test():
         assert any(t["id"] == task_id for t in user_tasks), "❌ The task was not correctly registered"
         print("✅ Test completed: task was successfully registered and linked to the user.")
         results.append("Test completed: task was successfully registered and linked to the user.")
+        
     except Exception as e:
         results.append(f"❌ Assertion failed: {e}")
-
-    create_pdf(results)
-
+    
     requests.get(f'http://127.0.0.1:5001/users/delete/{user_id}')
+    if requests.get(f'http://127.0.0.1:5001/users/delete/{user_id}').status_code == 404:
+        results.append(f"Eliminated User: {user_id}")
+
     requests.get(f'http://127.0.0.1:5002/tasks/delete/{task_id}')
+    if requests.get(f'http://127.0.0.1:5002/tasks/delete/{task_id}').status_code == 404:
+        results.append(f"Eliminated Task: {user_id}")
+    create_pdf(results)
 
 
 if __name__ == "__main__":

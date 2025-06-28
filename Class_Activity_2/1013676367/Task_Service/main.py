@@ -47,7 +47,7 @@ def delete_tasks(task_id):
         db.session.commit()
         return jsonify({'delete task': f'{task_id}'})
     except Exception as e:
-        return jsonify({'error': f'Error de conexión a tarea: {str(e)}'}), 500
+        return jsonify({"message": str(e)}), 404
 
 
 

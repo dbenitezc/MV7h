@@ -94,7 +94,7 @@ def delete_user(user_id):
         db.session.commit()
         return jsonify({'delete user': f'{user_id}'})
     except Exception as e:
-        return jsonify({'error': f'Error de conexión al usuarios: {str(e)}'}), 500
+        return jsonify({"message": str(e)}), 404
 
 ```
 * Elimina un usuario específico por ID
@@ -115,7 +115,7 @@ def delete_tasks(task_id):
         db.session.commit()
         return jsonify({'delete task': f'{task_id}'})
     except Exception as e:
-        return jsonify({'error': f'Error de conexión a tarea: {str(e)}'}), 500
+        return jsonify({"message": str(e)}), 404
 
 ```
 * Elimina una tarea específica por ID
@@ -140,6 +140,7 @@ def create_pdf(results):
     pdf.set_font("Arial", size=12)
     pdf.cell(200, 10, "Resultados de Pruebas", ln=True, align="C")
     pdf.ln(10)
+    pdf.multi_cell(100, 10,"Test performed: " + str(datetime.datetime.now().date()))
 
     for line in results:
         pdf.multi_cell(0, 10, line.encode('ascii', 'ignore').decode())
@@ -180,13 +181,18 @@ def integration_test():
         assert any(t["id"] == task_id for t in user_tasks), "❌ The task was not correctly registered"
         print("✅ Test completed: task was successfully registered and linked to the user.")
         results.append("Test completed: task was successfully registered and linked to the user.")
+        
     except Exception as e:
         results.append(f"❌ Assertion failed: {e}")
-
-    create_pdf(results)
-
+    
     requests.get(f'http://127.0.0.1:5001/users/delete/{user_id}')
+    if requests.get(f'http://127.0.0.1:5001/users/delete/{user_id}').status_code == 404:
+        results.append(f"Eliminated User: {user_id}")
+
     requests.get(f'http://127.0.0.1:5002/tasks/delete/{task_id}')
+    if requests.get(f'http://127.0.0.1:5002/tasks/delete/{task_id}').status_code == 404:
+        results.append(f"Eliminated Task: {user_id}")
+    create_pdf(results)
 ```
 
 ### nuevo main - FrontEnd
@@ -205,9 +211,15 @@ def main():
         task_id = crear_tarea(driver, wait, user_id, results)
         ver_tareas(driver, results)
         time.sleep(3)  # Final delay to observe results if not running headless
-        create_pdf(results)
+        
         requests.get(f'http://127.0.0.1:5001/users/delete/{user_id}')
+        if requests.get(f'http://127.0.0.1:5001/users/delete/{user_id}').status_code == 404:
+            results.append(f"Eliminated User: {user_id}")
+
         requests.get(f'http://127.0.0.1:5002/tasks/delete/{task_id}')
+        if requests.get(f'http://127.0.0.1:5002/tasks/delete/{task_id}').status_code == 404:
+            results.append(f"Eliminated Task: {user_id}")
+        create_pdf(results)
         time.sleep(3)
 
     finally:
