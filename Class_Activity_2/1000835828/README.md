@@ -66,7 +66,7 @@ cd Test
 python FrontEnd-Test.py
 ```
 ## Funcionalidades Implementadas
-1. Limpieza de Datos de Prueba
+## Limpieza de Datos de Prueba
 Objetivo: Eliminar automáticamente los datos creados durante las pruebas
 Implementación:
 
@@ -76,9 +76,11 @@ Nuevos endpoints DELETE en los servicios:
 
 - DELETE /test/cleanup (Taskservice)
 
-Botón "Eliminar Datos de Prueba" en el frontend
+Otras implementaciones:
 
-Verificación automática en pruebas
+- Botón "Eliminar Datos de Prueba" en el frontend
+
+- Verificación automática en pruebas
 
 ### Secciones de código agregadas:
 ```bash
@@ -171,7 +173,7 @@ def limpiar_y_verificar(driver, wait):
 ```
 
 
-2. Generación Automática de Reportes PDF
+## Generación Automática de Reportes PDF
 Objetivo: Crear reportes secuenciales con resultados de pruebas
 Implementación:
 
