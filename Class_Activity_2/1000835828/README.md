@@ -1,6 +1,6 @@
-# Class activity 2
+# Reporte Class activity 2
 ## Cristhian Alejandro Alarcón Florido CC 1000835828
-## Descripción del Proyecto
+## Descripción del Proyecto e implementaciones nuevas
 Este proyecto implementa un sistema distribuido con backend en microservicios para gestionar usuarios y tareas, con una interfaz frontend y pruebas automatizadas. Las dos funcionalidades principales agregadas son:
 
 - Limpieza de datos de prueba - Elimina automáticamente datos generados durante pruebas
