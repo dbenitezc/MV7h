@@ -1,0 +1,61 @@
+# Entornos virtuales
+myenv/
+venv/
+env/
+.venv/
+venv*/
+.venv*/
+env*/
+*.venv/
+
+# Archivos de base de datos SQLite
+*.db
+*.sqlite
+*.sqlite3
+
+# Directorios de dependencias de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Reportes y capturas de prueba
+# /test_reports/
+# /test_screenshots/
+
+# Archivos de configuración del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de entorno
+.env
+.venv
+
+# Configuración de IDE
+.vscode/
+.idea/
+
+# Archivos temporales
+*.log
+*.tmp
+*~
+
+# Archivos generados por Selenium
+geckodriver.log
+chromedriver.log
+
+# Archivos de caché de Python
+.pytest_cache/
+.mypy_cache/
+
+# Archivos de instalación
+dist/
+build/
+*.egg-info/
+
+# Archivos de Jupyter Notebook
+*.ipynb
+*.ipynb_checkpoints/
+
+# Archivos de sistema específicos de Windows
+Desktop.ini
