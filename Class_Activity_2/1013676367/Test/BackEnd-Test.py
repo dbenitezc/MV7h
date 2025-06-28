@@ -38,7 +38,6 @@ def create_pdf(results):
     pdf.set_font("Arial", size=12)
     pdf.cell(200, 10, "Resultados de Pruebas BackEnd", ln=True, align="C")
     pdf.ln(10)
-
     pdf.multi_cell(100, 10,"Test performed: " + str(datetime.datetime.now().date()))
 
     for line in results:
