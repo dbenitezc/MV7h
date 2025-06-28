@@ -46,7 +46,7 @@ def delete_user(user_id):
         db.session.commit()
         return jsonify({'delete user': f'{user_id}'})
     except Exception as e:
-        return jsonify({'error': f'Error de conexión al usuarios: {str(e)}'}), 500
+        return jsonify({"message": str(e)}), 404
 
 
 if __name__ == '__main__':

@@ -180,13 +180,18 @@ def integration_test():
         assert any(t["id"] == task_id for t in user_tasks), "❌ The task was not correctly registered"
         print("✅ Test completed: task was successfully registered and linked to the user.")
         results.append("Test completed: task was successfully registered and linked to the user.")
+        
     except Exception as e:
         results.append(f"❌ Assertion failed: {e}")
-
-    create_pdf(results)
-
+    
     requests.get(f'http://127.0.0.1:5001/users/delete/{user_id}')
+    if requests.get(f'http://127.0.0.1:5001/users/delete/{user_id}').status_code == 404:
+        results.append(f"Eliminated User: {user_id}")
+
     requests.get(f'http://127.0.0.1:5002/tasks/delete/{task_id}')
+    if requests.get(f'http://127.0.0.1:5002/tasks/delete/{task_id}').status_code == 404:
+        results.append(f"Eliminated Task: {user_id}")
+    create_pdf(results)
 ```
 
 ### nuevo main - FrontEnd
